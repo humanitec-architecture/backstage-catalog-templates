@@ -42,6 +42,16 @@ spec:
           cloudProvider: ${{ steps.environment.output.cloudProvider }}
           githubOrgId: ${{ steps.environment.output.githubOrgId }}
 
+    - id: trigger-pipeline
+      name: Onboard Humanitec App Onboarding
+      action: github:actions:dispatch
+      input:
+        repoUrl: 'github.com?repo=backstage&owner=${{ steps.environment.output.githubOrgId }}'
+        workflowId: 'onboard-humanitec-app.yaml'
+        branchOrTagName: 'main'
+        workflowInputs:
+          app_id: ${{ parameters.componentName }}
+    
     - id: publish
       name: Publish
       action: publish:github
@@ -53,12 +63,6 @@ spec:
         repoVisibility: public
         protectDefaultBranch: false
         oidcCustomization: ${{ steps.environment.output.githubOIDCCustomization }}
-
-    - id: humanitec-create-app
-      name: Create Humanitec App
-      action: humanitec:create-app
-      input:
-        appId: ${{ parameters.componentName }}
 
     - id: register
       name: Register
