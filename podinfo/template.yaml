@@ -52,8 +52,8 @@ spec:
         workflowInputs:
           app_id: ${{ parameters.componentName }}
     
-    - id: publish
-      name: Publish
+    - id: create-repo
+      name: Create GitHub repository
       action: publish:github
       input:
         allowedHosts: ['github.com']
@@ -65,7 +65,7 @@ spec:
         oidcCustomization: ${{ steps.environment.output.githubOIDCCustomization }}
 
     - id: register
-      name: Register
+      name: Register Component in Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
