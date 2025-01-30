@@ -43,7 +43,7 @@ spec:
           githubOrgId: ${{ steps.environment.output.githubOrgId }}
 
     - id: trigger-pipeline
-      name: Onboard Humanitec App Onboarding
+      name: Onboard Humanitec App
       action: github:actions:dispatch
       input:
         repoUrl: 'github.com?repo=backstage&owner=${{ steps.environment.output.githubOrgId }}'
