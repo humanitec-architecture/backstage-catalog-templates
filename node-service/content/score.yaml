@@ -3,7 +3,7 @@ metadata:
   name: node-workload
 containers:
   node-service:
-    image: . # Set by pipeline
+    image: .
     variables:
       PORT: "3000"
       DB_DATABASE: ${resources.db.name}

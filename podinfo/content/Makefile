@@ -17,18 +17,16 @@ CONTAINER_IMAGE = ${CONTAINER_NAME}:test
 
 .score-compose/state.yaml:
 	score-compose init \
-		--no-sample
+		--no-sample \
+		--patch-templates https://raw.githubusercontent.com/score-spec/community-patchers/refs/heads/main/score-compose/unprivileged.tpl
 
 compose.yaml: score.yaml .score-compose/state.yaml Makefile
 	score-compose generate score.yaml \
 		--build '${CONTAINER_NAME}={"context":".","tags":["${CONTAINER_IMAGE}"]}'
 
-compose.override.yaml:
-	echo '{"services":{"${WORKLOAD_NAME}-${CONTAINER_NAME}":{"read_only":"true","user":"65532","cap_drop":["ALL"]}}}' | yq e -P > compose.override.yaml
-
 ## Generate a compose.yaml file from the score spec and launch it.
 .PHONY: compose-up
-compose-up: compose.yaml compose.override.yaml
+compose-up: compose.yaml
 	docker compose up --build -d --remove-orphans
 	sleep 5
 
@@ -44,7 +42,8 @@ compose-down:
 
 .score-k8s/state.yaml:
 	score-k8s init \
-		--no-sample
+		--no-sample \
+		--patch-templates https://raw.githubusercontent.com/score-spec/community-patchers/refs/heads/main/score-k8s/unprivileged.tpl
 
 manifests.yaml: score.yaml .score-k8s/state.yaml Makefile
 	score-k8s generate score.yaml \
