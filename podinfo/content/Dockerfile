@@ -1,1 +1,1 @@
-FROM stefanprodan/podinfo:latest
+FROM ghcr.io/stefanprodan/podinfo:latest
