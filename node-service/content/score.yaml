@@ -1,6 +1,8 @@
 apiVersion: score.dev/v1b1
 metadata:
   name: node-workload
+  annotations:
+    tags: "website,ui,nodejs"
 containers:
   node-service:
     image: .

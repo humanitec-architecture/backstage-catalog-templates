@@ -1,11 +1,51 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+    annotations:
+        github.com/project-slug: ${{ values.githubOrgId.name | dump }}/${{ values.name | dump }}
+    description: ${{ values.name | dump }}
+    links:
+        - icon: github
+          title: Repository
+          url: https://github.com/${{ values.githubOrgId.name | dump }}/${{ values.name | dump }}
+    name: ${{ values.name | dump }}
+spec:
+    owner: user:guest
+---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ values.name | dump }}
-  annotations:
-    "humanitec.com/orgId": ${{ values.orgId | dump }}
-    "humanitec.com/appId": ${{ values.name | dump }}
+    annotations:
+        github.com/project-slug: ${{ values.githubOrgId.name | dump }}/${{ values.name | dump }}
+        humanitec.com/orgId: ${{ values.orgId | dump }}
+        humanitec.com/appId: ${{ values.name | dump }}
+    description: podinfo-workload
+    links:
+        - icon: github
+          title: Repository
+          url: https://github.com/${{ values.githubOrgId.name | dump }}/${{ values.name | dump }}
+    name: ${{ values.name | dump }}-podinfo-workload
+    tags:
+        - website
+        - ui
+        - golang
+    title: podinfo-workload
 spec:
-  type: service
-  owner: user:guest
-  lifecycle: experimental
+    dependsOn:
+        - resource:${{ values.name | dump }}-podinfo-workload-dns
+    lifecycle: experimental
+    owner: user:guest
+    system: ${{ values.name | dump }}
+    type: website
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+    description: ${{ values.name | dump }}-podinfo-workload-dns
+    name: ${{ values.name | dump }}-podinfo-workload-dns
+    title: dns
+spec:
+    owner: user:guest
+    system: ${{ values.name | dump }}
+    type: dns
