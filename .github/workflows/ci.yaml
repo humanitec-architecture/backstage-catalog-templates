@@ -4,7 +4,8 @@ permissions:
 on:
   pull_request:
   push:
-    branches: 'main'
+    branches:
+    - main
 jobs:
   test-node-service:
     runs-on: ubuntu-latest
